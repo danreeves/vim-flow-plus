@@ -3,8 +3,16 @@ if exists('g:loaded_flow_plus')
 endif
 
 let g:loaded_flow_plus = 1
-let g:flow#flowpath = 'flow'
-let g:flow#flags = ' --from vim --json --no-auto-start --strip-root'
+if !exists('g:flow#flowpath')
+  let g:flow#flowpath = 'flow'
+endif
+if !exists('g:flow#flags')
+  let g:flow#flags = ' --from vim --json --no-auto-start'
+endif
+
+" Hide the missing coverage by default
+let b:flow_coverage_highlight_enabled = 0
+let b:flow_highlights_drawn = 0
 
 function! s:FlowCoverageHide()
   for match in getmatches()

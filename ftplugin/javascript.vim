@@ -30,7 +30,7 @@ endfunction
 
 function! s:FlowCoverageRefresh()
   if !exists('b:flow_coverage_highlight_enabled')
-    let b:flow_coverage_highlight_enabled = 1
+    let b:flow_coverage_highlight_enabled = 0
   endif
 
   let command = g:flow#flowpath . ' coverage ' . g:flow#flags
@@ -92,7 +92,7 @@ function! s:ToggleHighlight()
   if !exists('b:flow_highlights_drawn')
     return
   endif
-  if b:flow_highlights_drawn && b:flow_coverage_highlight_enabled
+  if b:flow_coverage_highlight_enabled
     let b:flow_coverage_highlight_enabled = 0
     call s:FlowCoverageHide()
   else
@@ -106,8 +106,8 @@ function! s:FindRefs(pos) abort
     unlet b:flow_current_refs
   endif
 
-  let command = g:flow#flowpath . ' find-refs ' . a:pos . g:flow#flags
-  let result = system(command, getline(1, '$'))
+  let command = g:flow#flowpath . ' find-refs ' . expand('%') . ' ' . a:pos . g:flow#flags
+  let result = system(command)
 
   if v:shell_error > 0 || empty(result)
     if v:shell_error == 6
@@ -181,8 +181,8 @@ endfunction
 
 function! s:TypeAtPos()
   let pos = line('.') . ' ' . col('.')
-  let command = g:flow#flowpath . ' type-at-pos ' . pos . g:flow#flags
-  let result = system(command, getline(1, '$'))
+  let command = g:flow#flowpath . ' type-at-pos ' . expand('%') . ' ' . pos . g:flow#flags
+  let result = system(command)
 
   if v:shell_error > 0 || empty(result)
     return
@@ -194,8 +194,8 @@ endfunction
 
 function! s:GetDefAtPos()
   let pos = line('.') . ' ' . col('.')
-  let command = g:flow#flowpath . ' get-def ' . pos . g:flow#flags
-  let result = system(command, getline(1, '$'))
+  let command = g:flow#flowpath . ' get-def ' . expand('%') . ' ' . pos . g:flow#flags
+  let result = system(command)
 
   if v:shell_error > 0 || empty(result)
     return

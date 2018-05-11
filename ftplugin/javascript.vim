@@ -33,8 +33,8 @@ function! s:FlowCoverageRefresh()
     let b:flow_coverage_highlight_enabled = 0
   endif
 
-  let command = g:flow#flowpath . ' coverage ' . g:flow#flags
-  let result = system(command, getline(1, '$'))
+  let command = g:flow#flowpath . ' coverage ' . expand('%') . g:flow#flags
+  let result = system(command)
 
   if v:shell_error > 0 || empty(result)
     let b:flow_coverage_status = ''
